@@ -86,7 +86,12 @@ resource "azurerm_key_vault_access_policy" "read-policy" {
 
 # Create a Key Vault Key for Vault
 resource "azurerm_key_vault_key" "vault-key" {
-  depends_on=[azurerm_key_vault.key-vault]
+ depends_on=[
+    azurerm_key_vault.key-vault, 
+    azurerm_key_vault_access_policy.default_policy,
+    azurerm_key_vault_access_policy.full-policy,
+    azurerm_key_vault_access_policy.read-policy
+  ]
   
   name         = "${var.prefix}-${var.environment}-vault-key"
   key_vault_id = azurerm_key_vault.key-vault.id
